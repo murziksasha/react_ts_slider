@@ -6,14 +6,15 @@ import { Photo, CommonClassProps } from "../types";
 interface PreviewGalleryProps extends CommonClassProps{
   activePhotoIndex: number;
   photos: Photo[];
-  nextPhoto?: Photo;
+  setNewPhoto: (id: number) => void;
 }
 
 
 export const PreviewGallery: React.FC<PreviewGalleryProps> = ({
   activePhotoIndex,
   photos,
-  className
+  className,
+  setNewPhoto
 }) => {
   if(!photos.length){return null;};
   const previewContainer = useRef<HTMLUListElement>(null);
@@ -31,12 +32,17 @@ export const PreviewGallery: React.FC<PreviewGalleryProps> = ({
           className={style.previewGalleryTrack}
           ref={previewContainer}
           >
-            {photos.map((photo) =>(
+            {photos.map((photo, id) =>(
               <li key={photo.id}
               className={style.previewGalleryPreview}>
-              <img src={photo.preview} alt={photo.description}
-                className={style.previewGalleryImage}
-                />
+                <button
+                  className={style.previewGalleryPreview}
+                  onClick={() => setNewPhoto(id)}
+                >
+                  <img src={photo.preview} alt={photo.description}
+                  className={style.previewGalleryImage}
+                  />
+                </button>
               </li>
             ))}
           </ul>
